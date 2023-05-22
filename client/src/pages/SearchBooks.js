@@ -10,7 +10,7 @@ import {
 
 import Auth from '../utils/auth';
 import { useMutation } from '@apollo/client';
-import { SAVE_BOOK } from '../utils/queries';
+import { SAVE_BOOK } from '../utils/mutations';
 import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
@@ -22,6 +22,8 @@ const SearchBooks = () => {
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
+
+  const [saveBook, { error }] = useMutation(SAVE_BOOK);
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
@@ -69,7 +71,6 @@ const SearchBooks = () => {
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-    const [saveBook, { error }] = useMutation(SAVE_BOOK);
 
     if (!token) {
       return false;
@@ -97,7 +98,7 @@ const SearchBooks = () => {
         <Container>
           <h1>Search for Books!</h1>
           <Form onSubmit={handleFormSubmit}>
-            <Form.Row>
+            <Form.Group>
               <Col xs={12} md={8}>
                 <Form.Control
                   name='searchInput'
@@ -113,7 +114,7 @@ const SearchBooks = () => {
                   Submit Search
                 </Button>
               </Col>
-            </Form.Row>
+            </Form.Group>
           </Form>
         </Container>
       </div>
