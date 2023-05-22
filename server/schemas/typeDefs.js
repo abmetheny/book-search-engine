@@ -6,7 +6,16 @@ const typeDefs = gql`
     username: String
     email: String
     password: String
-    savedBooks: [String]!
+    savedBooks: [Book]!
+  }
+
+  type Book {
+    _id: ID
+    title: String
+    link: String
+    description: String
+    authors: [String]
+    image: String
   }
 
   type Auth {
@@ -16,6 +25,7 @@ const typeDefs = gql`
 
   type Query {
     getSingleUser(userId: ID!): User
+    me: User
     # Because we have the context functionality in place to check a JWT and decode its data, we can use a query that will always find and return the logged in user's data
   }
 
@@ -23,8 +33,8 @@ const typeDefs = gql`
     createUser(username: String!, email: String!, password: String!): Auth
     login(email: String!, password: String!): Auth
 
-    saveBook(userId: ID!, title: String!): User
-    deleteBook(title: String!): User
+    saveBook(userId: ID!, title: String!, description: String!, authors: [String]!, bookId: String!, image: String!, link: String!): User
+    deleteBook(bookId: String!): User
   }
 `;
 

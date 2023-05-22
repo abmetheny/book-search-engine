@@ -7,6 +7,12 @@ const resolvers = {
     getSingleUser: async (parent, { userId }) => {
       return User.findOne({ _id: userId });
     },
+    me: async (parent, context) => {
+      if (context.user) {
+        return User.findOne({ _id: context.user._id }).populate('savedBooks');
+      }
+      throw new AuthenticationError('You need to be logged in!');
+    },
   },
 
   Mutation: {
