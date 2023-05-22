@@ -4,9 +4,6 @@ const { AuthenticationError } = require('apollo-server-express');
 
 const resolvers = {
   Query: {
-    getSingleUser: async (parent, { userId }) => {
-      return User.findOne({ _id: userId });
-    },
     me: async (parent, context) => {
       if (context.user) {
         return User.findOne({ _id: context.user._id }).populate('savedBooks');
@@ -16,7 +13,7 @@ const resolvers = {
   },
 
   Mutation: {
-    createUser: async (parent, { username, email, password }) => {
+    addUser: async (parent, { username, email, password }) => {
       return User.create({ username, email, password });
     },
     login: async (parent, { email, password }) => {
@@ -50,7 +47,7 @@ const resolvers = {
         }
         throw new AuthenticationError('You need to be logged in!');
     },
-    deleteBook: async (parent, { title }, context) => {
+    removeBook: async (parent, { title }, context) => {
         if (context.user) {
             return User.findOneAndUpdate(
               { _id: context.userId },
