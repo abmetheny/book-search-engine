@@ -2,7 +2,7 @@
 Refactoring a RESTful API search engine to be a GraphQL API built with Apollo Server.
 
 ## Link to Deployed App
-[Amy Metheny React Portfolio](#)
+[Amy Metheny React Portfolio](https://purple-donkey-wings.herokuapp.com/)
 
 ## Overview
 * Refactored a fully functional RESTful API that used controllers to use and Apollo Server and GraphQL queries and mutations to fetch and modify data
