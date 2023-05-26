@@ -47,7 +47,6 @@ const SearchBooks = () => {
       }
 
       const { items } = await response.json();
-      // console.log(items);
 
       const bookData = items.map((book) => ({
         bookId: book.id,
@@ -71,14 +70,12 @@ const handleSaveBook = async (bookId) => {
   const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
   // get token
   const token = Auth.loggedIn() ? Auth.getToken() : null;
-  console.log("bookToSave", bookToSave, "token", token);
+  
   if (!token) {
     return false;
   }
   try {
-    console.log("trying try block")
     const { data } = await saveBook({ variables: { bookData: bookToSave } });
-    console.log("after saveBook")
  
     // if book successfully saves to user's account, save book id to state
     setSavedBookIds([...savedBookIds, bookToSave.bookId]);
