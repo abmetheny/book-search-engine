@@ -36,13 +36,13 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
-    saveBook: async (parent, { saveBookData }, context) => {
+    saveBook: async (parent, { bookData }, context) => {
+      console.log("book data from resolver", bookData);
       if (context.user) {
-        console.log("book data from resolver", saveBookData);
         const newBook = await User.findOneAndUpdate(
           { _id: context.user._id },
           {
-            $push: { savedBooks: saveBookData },
+            $push: { savedBooks: bookData },
           },
           {
             new: true,
@@ -53,13 +53,14 @@ const resolvers = {
       }
       throw new AuthenticationError('You need to be logged in!');
     },
-    removeBook: async (parent, { title }, context) => {
+    removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
-          return User.findOneAndUpdate(
-            { _id: context.userId },
-            { $pull: { savedBooks: { title: title } } },
+          const removeBook = User.findOneAndUpdate(
+            { _id: context.user._id },
+            { $pull: { savedBooks: { bookId } } },
             { new: true }
           );
+          return removeBook;
       }
       throw new AuthenticationError('You need to be logged in!');
     },

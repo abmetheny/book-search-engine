@@ -24,6 +24,7 @@ const SavedBooks = () => {
   const [removeBook, { error }] = useMutation(REMOVE_BOOK);
 
   const userData = data?.me || [];
+  // console.log("userData", userData);
 
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
@@ -31,19 +32,19 @@ const SavedBooks = () => {
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
+    // console.log("bookId", bookId);
+    // console.log(token);
 
     if (!token) {
       return false;
     }
 
     try {
-      const response = await removeBook({
-        variables: { bookId: bookId }
-      })
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
+      console.log("trying");
+      const { data } = await removeBook({
+        variables: { bookId },
+      });
+      console.log("data", data);
 
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
@@ -73,8 +74,8 @@ const SavedBooks = () => {
         <Row>
           {userData.savedBooks.map((book) => {
             return (
-              <Col md="4">
-                <Card key={book.bookId} border='dark'>
+              <Col md="4" key={book.bookId}>
+                <Card border='dark' key={book.bookId}>
                   {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
                   <Card.Body>
                     <Card.Title>{book.title}</Card.Title>
